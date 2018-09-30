@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace CheckListToolWPF
 {
-    public class NotifyPropertyChange : INotifyPropertyChanged
+    public class NotifyPropertyChange :  INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

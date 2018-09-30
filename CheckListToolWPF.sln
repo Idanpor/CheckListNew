@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2016
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckListToolWPF", "CheckListToolWPF.csproj", "{9A42297C-5E3A-4E21-BEB2-DB209499D50C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A42297C-5E3A-4E21-BEB2-DB209499D50C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A42297C-5E3A-4E21-BEB2-DB209499D50C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A42297C-5E3A-4E21-BEB2-DB209499D50C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A42297C-5E3A-4E21-BEB2-DB209499D50C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6BF9C27C-6CB8-4DF0-871A-96C4FD08FD96}
+	EndGlobalSection
+EndGlobal
