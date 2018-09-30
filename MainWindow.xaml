@@ -1,0 +1,110 @@
+﻿<Window x:Class="CheckListToolWPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CheckListToolWPF"
+        mc:Ignorable="d"
+        Title="Checklist Tool" Height="{Binding FormHeight,Mode=TwoWay}" Width="540" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+        Icon="{Binding IconPath}" ResizeMode="NoResize">
+    <Window.Resources>
+        <DataTemplate x:Key="MyDataTemplate"
+                  DataType="local:QuestionModel">
+            <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" >
+                <Grid.RowDefinitions>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                   Text="{Binding Path=Question}" Padding="5,0,0,0" />
+
+                <RadioButton Grid.Column="1" GroupName="{Binding Path = GroupNameYes}" Content="Yes" IsChecked="{Binding Path=IsYesCheckBox}" Padding="5,0,0,0" />
+                <RadioButton Grid.Column="2" GroupName="{Binding Path = GroupNameYes}" Content="No" IsChecked="{Binding Path=IsNoCheckBox}" Padding="5,0,0,0" Margin="20,0,0,0" />
+
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="MyDataTemplate2"
+                  DataType="local:CheckModel">
+            <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" >
+                <Grid.RowDefinitions>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0"
+                   Text="{Binding Path=CheckDescription}" Padding="5,0,0,0" />
+
+                <RadioButton Grid.Column="1" GroupName="{Binding Path = GroupNameDone}" Content="Done" IsChecked="{Binding Path=IsDoneCheckBox}" Padding="5,0,0,0" />
+                <RadioButton Grid.Column="2" GroupName="{Binding Path = GroupNameDone}" Content="Not Relevant" IsChecked="{Binding Path=IsNotRelevantCheckBox}" Padding="5,0,0,0" Margin="20,0,0,0" />
+
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <StackPanel>
+        <Label Name="header"  Height="40" Width="250" Content="CheckList-filter questions" FontSize="20" FontWeight="Bold"  HorizontalAlignment="Center"/>
+        <Border BorderThickness="2" BorderBrush="DarkBlue">
+        <ScrollViewer>
+        <StackPanel>
+
+            <ListBox ItemsSource="{Binding QuestionList}"
+             ItemTemplate="{StaticResource MyDataTemplate}"
+             HorizontalContentAlignment="Stretch" Name ="questlist">
+
+            </ListBox>
+
+            <ListBox ItemsSource="{Binding CheckList}"
+             ItemTemplate="{StaticResource MyDataTemplate2}"
+             HorizontalContentAlignment="Stretch"
+                 Visibility="Collapsed" Name ="checklist">
+
+            </ListBox>
+        </StackPanel>
+        </ScrollViewer>
+        </Border>
+        
+        <Separator BorderBrush="Black" Height="20"/>
+        <StackPanel Name="impactSection">
+        <Label  Height="40" Width="250" Content="Impact Analysis: " FontSize="16" FontWeight="Bold" HorizontalAlignment="Left"/>
+        <Border BorderThickness="2" BorderBrush="DarkBlue">
+
+            <ScrollViewer>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,7,0,7">
+                            <TextBlock Text="WorkItem number: " FontWeight="Bold" Margin="0,0,5,0"/>
+                            <TextBox Text="{Binding WorkItem, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="100" BorderBrush="Black"/>
+                </StackPanel>
+               
+                <ListBox ItemsSource="{Binding ImpactList}"
+             ItemTemplate="{StaticResource MyDataTemplate}"
+             HorizontalContentAlignment="Stretch"
+                 Visibility="Visible" Margin="0,7,0,7">
+
+                </ListBox>
+
+
+
+            </StackPanel>
+                </ScrollViewer>
+        </Border>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+        <!--<Button Command="{Binding SubmitCommand}"></Button>-->
+            <Button Click="Submit_Button_Click" Width="100" Height="30" Content="Go to CheckList" Visibility="Visible" Name="submit_button" Margin="10,15,10,0" Background="Gray" HorizontalAlignment="Center"/>
+
+            <Button Click="Finish_Button_Click" Width="100" Height="30" Content="Submit" Visibility="Collapsed" Name="finish_button" Margin="10,15,10,0" Background="Gray" HorizontalAlignment="Center"/>
+
+            <Button Click="Exit_Button_Click" Width="100" Height="30" Content="Exit" Visibility="Visible" Name="exit_button" Margin="10,15,10,0" Background="Gray" HorizontalAlignment="Center"/>
+        </StackPanel>
+        
+    </StackPanel>
+    
+    
+</Window>

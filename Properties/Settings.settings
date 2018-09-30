@@ -1,0 +1,21 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="CheckListToolWPF.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="CheckListPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">R:\CT Apps\Tools\\Commit_CheckList</Value>
+    </Setting>
+    <Setting Name="CheckListGroupPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">R:\CT Apps\Tools\Commit_CheckList\CheckListGroups</Value>
+    </Setting>
+    <Setting Name="UsersCommitsPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">R:\CT Apps\Tools\Commit_CheckList\Developres.xml</Value>
+    </Setting>
+    <Setting Name="ImpactAnalysisExcelPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">R:\CT Apps\ImpactAnalysis\ImpactAnalysis.xlsx</Value>
+    </Setting>
+    <Setting Name="IconPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">R:\CT Apps\Tools\Commit_CheckList\check.png</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
