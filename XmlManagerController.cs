@@ -237,17 +237,16 @@ namespace CheckListToolWPF
                 XmlDocument xml = new XmlDocument();
                 xml.Load(checkModel.CheckFilePath);
                 XmlNode xmlPortalRun = xml.SelectSingleNode("/GroupChecks/Checks/Check[CheckDescription ='" + checkModel.CheckDescription + "']/CoveredCount");
-                switch (checkModel.CheckResult)
+                if (checkModel.IsDoneCheckBox)
                 {
-                    case CheckResult.Done:
-                        xmlPortalRun = xml.SelectSingleNode("/GroupChecks/Checks/Check[CheckDescription ='" + checkModel.CheckDescription + "']/CoveredCount");
-
-                        break;
-                    case CheckResult.NotRelevant:
-                        xmlPortalRun = xml.SelectSingleNode("/GroupChecks/Checks/Check[CheckDescription ='" + checkModel.CheckDescription + "']/NotRelevantCount");
-
-                        break;
+                    xmlPortalRun = xml.SelectSingleNode("/GroupChecks/Checks/Check[CheckDescription ='" + checkModel.CheckDescription + "']/CoveredCount");
                 }
+                else
+                {
+                    xmlPortalRun = xml.SelectSingleNode("/GroupChecks/Checks/Check[CheckDescription ='" + checkModel.CheckDescription + "']/NotRelevantCount");
+
+                }
+
                 if (xmlPortalRun != null)
                     xmlPortalRun.InnerText = (int.Parse(xmlPortalRun.InnerText) + 1).ToString();
                 xml.Save(checkModel.CheckFilePath);

@@ -24,7 +24,7 @@ namespace CheckListToolWPF.ViewModel
 
         public DelegateCommand SubmitCommand { get; private set; }
 
-       
+
 
         private int formHeight;
         public int FormHeight
@@ -73,7 +73,7 @@ namespace CheckListToolWPF.ViewModel
 
         public FilterQuestionsViewNodel(List<QuestionModel> questionModelList, List<QuestionForExcel> impactModelList)
         {
-            FormHeight = 600;
+            FormHeight = 700;
             QuestionList =
   new ObservableCollection<QuestionModel>();
 
@@ -87,49 +87,24 @@ new ObservableCollection<QuestionForExcel>();
             CheckList = new ObservableCollection<CheckModel>();
         }
 
+
         internal List<CheckModel> SetCheckList()
         {
             Dictionary<string, bool> dic = new Dictionary<string, bool>();
             foreach (QuestionModel quest in QuestionList)
             {
-                bool isFilled = true;
-                if (quest.QuestionResult == QuestResult.Nothing)
-                {
-                    MessageBox.Show("Please fill all the questions");
-                    isFilled = false;
-                    return null;
-                }
                 dic.Add((quest as QuestionModel)?.Question ?? throw new InvalidOperationException(), (quest as QuestionModel).IsRelevantQuestion);
-
             }
             XmlManagerController.dictionaryChecks = dic;
 
-
-
-            return XmlManagerController.GetChecks();//.ForEach(e=> CheckList.Add(e));
+            return XmlManagerController.GetChecks();
         }
 
-        internal bool SeTImpactInExcel()
+        public bool Finished{get;set;}
+
+        internal void SeTImpactInExcel()
         {
-            bool isFilled = true;
-            foreach (var quest in ImpactList)
-            {
-                if (((QuestionForExcel)quest).QuestionResult == QuestResult.Nothing)
-                {
-                    MessageBox.Show("Please fill all the questions");
-                    isFilled = false;
-                    break;
-                }
-
-            }
-
-            if (WorkItem == null)
-            {
-                MessageBox.Show("Please fill the workItem Id");
-                isFilled = false;
-            }
-
-            if (isFilled && !ExcelManagerController.IsFileLocked())
+            if (!ExcelManagerController.IsFileLocked())
             {
                 ExcelManagerController.OpenAndSet(1, DateTime.Now.ToShortDateString());
                 ExcelManagerController.OpenAndSet(2, XmlManagerController.GetDeveloperName());
@@ -140,16 +115,11 @@ new ObservableCollection<QuestionForExcel>();
                 }
                 ExcelManagerController.Close();
             }
-            return isFilled;
+            Finished = true;
         }
 
         internal bool SetCheckResults()
         {
-            if(CheckList.Where(e=>e.CheckResult == CheckResult.Nothing).ToList().Count > 0)
-            {
-                MessageBox.Show("Please fill in all the Checklist");
-                return false;
-            }
             foreach(CheckModel check in CheckList)
             {
                 XmlManagerController.SetCheckResult(check);

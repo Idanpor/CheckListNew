@@ -5,9 +5,256 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckListToolWPF"
         mc:Ignorable="d"
-        Title="Checklist Tool" Height="{Binding FormHeight,Mode=TwoWay}" Width="540" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
+        Title="Checklist Tool" Height="{Binding FormHeight,Mode=TwoWay}" Grid.IsSharedSizeScope="True" Width="560" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
         Icon="{Binding IconPath}" ResizeMode="NoResize">
     <Window.Resources>
+        <Style x:Key="SwitchTypeToggleButton"
+       TargetType="{x:Type ToggleButton}">
+
+            <Style.Resources>
+                <Color x:Key="Color.Additional.LightGrey">#989EA8</Color>
+                <Color x:Key="Color.Additional.MediumGrey">#61656B</Color>
+                <Color x:Key="Color.MedtronicBranding.MedtronicBlue">#004B87</Color>
+                <Color x:Key="Color.MedtronicBranding.CobaltBlue">#0085CA</Color>
+
+                <Style x:Key="ToggleButtonContentTextbox"
+               TargetType="TextBlock">
+                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    <Setter Property="VerticalAlignment" Value="Stretch" />
+                </Style>
+                <SolidColorBrush x:Key="ToggleButtonFalseBackground"
+                         Color="{StaticResource Color.Additional.LightGrey}" />
+                <SolidColorBrush x:Key="ToggleButtonTrueBackground"
+                         Color="{StaticResource Color.MedtronicBranding.CobaltBlue}" />
+                <SolidColorBrush x:Key="ToggleButtonFalseForeground"
+                         Color="{StaticResource Color.Additional.MediumGrey}" />
+                <SolidColorBrush x:Key="ToggleButtonTrueForeground"
+                         Color="{StaticResource Color.MedtronicBranding.MedtronicBlue}" />
+                <TextBlock x:Key="OffContent"
+                   Style="{StaticResource ToggleButtonContentTextbox}"
+                   Text="Off" />
+                <Style x:Key="OnContentControl"
+               TargetType="ContentControl">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <TextBlock FontFamily="Wingdings 2"
+                                   FontSize="24"
+                                   FontWeight="Bold"
+                                   Foreground="White"
+                                   Style="{StaticResource ToggleButtonContentTextbox}"
+                                   Text="P" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                </Style>
+                <Style x:Key="OffContentControl"
+               TargetType="ContentControl">
+                    <Setter Property="HorizontalAlignment" Value="Center" />
+                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <TextBlock FontSize="24"
+                                   Foreground="White"
+                                   Style="{StaticResource ToggleButtonContentTextbox}"
+                                   Text="X" />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                </Style>
+
+            </Style.Resources>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Grid x:Name="MainRow">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{Binding ElementName=TopRow,
+                        Path=ActualHeight}" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="{Binding ElementName=TopRow,
+                        Path=ActualHeight}" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition x:Name="TopRow" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+
+                                <Ellipse x:Name="BackgroundEllipse1"
+                                 Grid.RowSpan="2"
+                                 Grid.Column="0"
+                                 Grid.ColumnSpan="3"
+                                 Width="{Binding ElementName=MainRow,
+                                                 Path=ActualHeight}"
+                                 Height="{Binding ElementName=MainRow,
+                                                  Path=ActualHeight}"
+                                 HorizontalAlignment="Left"
+                                 Fill="{StaticResource ToggleButtonTrueBackground}" />
+                                <Ellipse x:Name="BackgroundEllipse2"
+                                 Grid.Row="0"
+                                 Grid.RowSpan="2"
+                                 Grid.Column="0"
+                                 Grid.ColumnSpan="3"
+                                 Width="{Binding ElementName=MainRow,
+                                                 Path=ActualHeight}"
+                                 Height="{Binding ElementName=MainRow,
+                                                  Path=ActualHeight}"
+                                 HorizontalAlignment="Right"
+                                 Fill="{StaticResource ToggleButtonFalseBackground}" />
+                                <Border x:Name="BackgroundBorder"
+                                Grid.Row="0"
+                                Grid.RowSpan="2"
+                                Grid.Column="1"
+                                Background="{StaticResource ToggleButtonTrueBackground}" />
+                            </Grid>
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition x:Name="AnimationWidth" />
+                                    <ColumnDefinition Width="{Binding ElementName=MainRow,
+                        Path=ActualHeight}" />
+                                </Grid.ColumnDefinitions>
+                                <Border x:Name="AnimationSizeBorder"
+                                Grid.Column="0" />
+                                <ContentControl Grid.Column="0"
+                                        Style="{StaticResource OnContentControl}" />
+                            </Grid>
+                            <Grid HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="{Binding ElementName=MainRow,
+                Path=ActualHeight}" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+
+                                <ContentControl Grid.Column="1"
+                                        Style="{StaticResource OffContentControl}" />
+                            </Grid>
+                            <Grid Background="Transparent">
+                                <StackPanel HorizontalAlignment="Left"
+                                    Orientation="Horizontal">
+                                    <Border Width="{Binding ElementName=AnimationSizeBorder,
+                Path=ActualWidth}" />
+                                    <Ellipse x:Name="ForegroundEllipse"
+                                     Width="{Binding ElementName=MainRow,
+                                                     Path=ActualHeight}"
+                                     Height="{Binding ElementName=MainRow,
+                                                      Path=ActualHeight}"
+                                     HorizontalAlignment="Right"
+                                     Fill="{StaticResource ToggleButtonTrueForeground}" />
+                                </StackPanel>
+                            </Grid>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="False">
+                                <Setter TargetName="BackgroundBorder" Property="Background"
+                Value="{StaticResource ToggleButtonFalseBackground}" />
+                                <Setter TargetName="ForegroundEllipse" Property="Fill"
+                Value="{StaticResource ToggleButtonFalseForeground}" />
+                                <!--<Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName
+                        ="AnimationSizeBorder"
+                        Storyboard.TargetProperty="(Border.Width)"
+                        To="0" Duration="0:0:3"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetName=
+                        "AnimationSizeBorder"
+                        Storyboard.TargetProperty="(Border.Width)"
+                        From="0" Duration="0:0:3"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>-->
+                                <Setter TargetName="AnimationSizeBorder" Property="Width" Value="0" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="CheckBoxStyle1" TargetType="{x:Type CheckBox}">
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type CheckBox}">
+                        <ControlTemplate.Resources>
+                            <Storyboard x:Key="OnChecking">
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="slider" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="25"/>
+                                </DoubleAnimationUsingKeyFrames>
+                            </Storyboard>
+                            <Storyboard x:Key="OnUnchecking">
+                                <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="slider" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                                    <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0"/>
+                                </DoubleAnimationUsingKeyFrames>
+                                <ThicknessAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="slider" Storyboard.TargetProperty="(FrameworkElement.Margin)">
+                                    <SplineThicknessKeyFrame KeyTime="00:00:00.3000000" Value="1,1,1,1"/>
+                                </ThicknessAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </ControlTemplate.Resources>
+
+                        <DockPanel x:Name="dockPanel">
+                            <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}" RecognizesAccessKey="True" VerticalAlignment="Center"/>
+                            <Grid Margin="5,5,0,5" Width="50" Background="#FFC0CCD9">
+                                <TextBlock Text="Yes" TextWrapping="Wrap" FontWeight="Bold" FontSize="12" HorizontalAlignment="Right" Margin="0,0,3,0"/>
+                                <TextBlock HorizontalAlignment="Left" Margin="2,0,0,0" FontSize="12" FontWeight="Bold" Text="No" TextWrapping="Wrap"/>
+                                <Border HorizontalAlignment="Left" x:Name="slider" Width="23" BorderThickness="1,1,1,1" CornerRadius="3,3,3,3" RenderTransformOrigin="0.5,0.5" Margin="1,1,1,1">
+                                    <Border.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                            <SkewTransform AngleX="0" AngleY="0"/>
+                                            <RotateTransform Angle="0"/>
+                                            <TranslateTransform X="0" Y="0"/>
+                                        </TransformGroup>
+                                    </Border.RenderTransform>
+                                    <Border.BorderBrush>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                                            <GradientStop Color="#FF4490FF" Offset="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.BorderBrush>
+                                    <Border.Background>
+                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                            <GradientStop Color="#FF8AB4FF" Offset="1"/>
+                                            <GradientStop Color="#FFD1E2FF" Offset="0"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                </Border>
+                            </Grid>
+                        </DockPanel>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard Storyboard="{StaticResource OnUnchecking}" x:Name="OnUnchecking_BeginStoryboard"/>
+                                </Trigger.ExitActions>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard Storyboard="{StaticResource OnChecking}" x:Name="OnChecking_BeginStoryboard"/>
+                                </Trigger.EnterActions>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <DataTemplate x:Key="MyDataTemplate"
                   DataType="local:QuestionModel">
             <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" >
@@ -16,14 +263,16 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
+                    <!--<ColumnDefinition Width="Auto" />-->
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0"
                    Text="{Binding Path=Question}" Padding="5,0,0,0" />
 
-                <RadioButton Grid.Column="1" GroupName="{Binding Path = GroupNameYes}" Content="Yes" IsChecked="{Binding Path=IsYesCheckBox}" Padding="5,0,0,0" />
-                <RadioButton Grid.Column="2" GroupName="{Binding Path = GroupNameYes}" Content="No" IsChecked="{Binding Path=IsNoCheckBox}" Padding="5,0,0,0" Margin="20,0,0,0" />
+                <!--<RadioButton Grid.Column="1" GroupName="{Binding Path = GroupNameYes}" Content="Yes" IsChecked="{Binding Path=IsYesCheckBox}" Padding="5,0,0,0" />
+                <RadioButton Grid.Column="2" GroupName="{Binding Path = GroupNameYes}" Content="No" IsChecked="{Binding Path=IsNoCheckBox}" Padding="5,0,0,0" Margin="20,0,0,0" />-->
+                <!--<CheckBox HorizontalAlignment="Center" Style="{DynamicResource CheckBoxStyle1}" VerticalAlignment="Center" IsChecked="False" Padding="5,0,0,0" Margin="20,0,0,0"/>-->
+                <ToggleButton Grid.Column="1"  HorizontalAlignment="Center" Style="{DynamicResource SwitchTypeToggleButton}" VerticalAlignment="Center" IsChecked="{Binding Path=IsYesCheckBox}" Padding="5,0,0,0" Margin="20,0,0,0"></ToggleButton>
 
             </Grid>
         </DataTemplate>
@@ -31,80 +280,82 @@
                   DataType="local:CheckModel">
             <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" >
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" SharedSizeGroup="A" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
+                    <!--<ColumnDefinition Width="Auto" />-->
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0"
                    Text="{Binding Path=CheckDescription}" Padding="5,0,0,0" />
+                <!--<CheckBox Grid.Column="1"  HorizontalAlignment="Center" Style="{DynamicResource CheckBoxStyle1}" VerticalAlignment="Center" IsChecked="{Binding Path=IsDoneCheckBox}" Padding="5,0,0,0" Margin="20,0,0,0"></CheckBox>-->
 
-                <RadioButton Grid.Column="1" GroupName="{Binding Path = GroupNameDone}" Content="Done" IsChecked="{Binding Path=IsDoneCheckBox}" Padding="5,0,0,0" />
-                <RadioButton Grid.Column="2" GroupName="{Binding Path = GroupNameDone}" Content="Not Relevant" IsChecked="{Binding Path=IsNotRelevantCheckBox}" Padding="5,0,0,0" Margin="20,0,0,0" />
+                <ToggleButton Grid.Column="1"  HorizontalAlignment="Center" Style="{DynamicResource SwitchTypeToggleButton}" VerticalAlignment="Center" IsChecked="{Binding Path=IsYesCheckBox}" Padding="5,0,0,0" Margin="20,0,0,0"></ToggleButton>
+                <!--<RadioButton Grid.Column="1" GroupName="{Binding Path = GroupNameDone}" Content="Done" IsChecked="{Binding Path=IsDoneCheckBox}" Padding="5,0,0,0" />
+                <RadioButton Grid.Column="2" GroupName="{Binding Path = GroupNameDone}" Content="Not Relevant" IsChecked="{Binding Path=IsNotRelevantCheckBox}" Padding="5,0,0,0" Margin="20,0,0,0" />-->
 
             </Grid>
         </DataTemplate>
     </Window.Resources>
     <StackPanel>
-        <Label Name="header"  Height="40" Width="250" Content="CheckList-filter questions" FontSize="20" FontWeight="Bold"  HorizontalAlignment="Center"/>
-        <Border BorderThickness="2" BorderBrush="DarkBlue">
-        <ScrollViewer>
-        <StackPanel>
 
-            <ListBox ItemsSource="{Binding QuestionList}"
-             ItemTemplate="{StaticResource MyDataTemplate}"
-             HorizontalContentAlignment="Stretch" Name ="questlist">
-
-            </ListBox>
-
-            <ListBox ItemsSource="{Binding CheckList}"
-             ItemTemplate="{StaticResource MyDataTemplate2}"
-             HorizontalContentAlignment="Stretch"
-                 Visibility="Collapsed" Name ="checklist">
-
-            </ListBox>
-        </StackPanel>
-        </ScrollViewer>
-        </Border>
-        
-        <Separator BorderBrush="Black" Height="20"/>
         <StackPanel Name="impactSection">
-        <Label  Height="40" Width="250" Content="Impact Analysis: " FontSize="16" FontWeight="Bold" HorizontalAlignment="Left"/>
-        <Border BorderThickness="2" BorderBrush="DarkBlue">
+            <Label  Height="40" Width="250" Content="Impact Analysis: " FontSize="16" FontWeight="Bold" HorizontalAlignment="Left"/>
+            <Border BorderThickness="2">
 
-            <ScrollViewer>
-            <StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,7,0,7">
-                            <TextBlock Text="WorkItem number: " FontWeight="Bold" Margin="0,0,5,0"/>
-                            <TextBox Text="{Binding WorkItem, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="100" BorderBrush="Black"/>
-                </StackPanel>
-               
-                <ListBox ItemsSource="{Binding ImpactList}"
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,7,0,7">
+                        <TextBlock Text="WorkItem number: " FontWeight="Bold" Margin="0,0,5,0"/>
+                        <TextBox Text="{Binding WorkItem, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="100" BorderBrush="Black"/>
+                    </StackPanel>
+
+                    <ListBox ItemsSource="{Binding ImpactList}"
              ItemTemplate="{StaticResource MyDataTemplate}"
              HorizontalContentAlignment="Stretch"
-                 Visibility="Visible" Margin="0,7,0,7">
+                 Visibility="Visible" Margin="0,7,0,7" Grid.IsSharedSizeScope="True"/>
 
+                </StackPanel>
+
+            </Border>
+        </StackPanel>
+        <Separator BorderBrush="Black" Height="20"/>
+        <Label Name="Title1"  Height="40" Width="250" Content="Checklist-Filter Questions: " FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" Visibility="Visible"/>
+        <Label Name="Title2"  Height="40" Width="250" Content="Checklist-Final: " FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" Visibility="Collapsed"/>
+
+        <Border BorderThickness="2">
+            <StackPanel>
+
+                <ListBox ItemsSource="{Binding QuestionList}"
+             ItemTemplate="{StaticResource MyDataTemplate}"
+             HorizontalContentAlignment="Stretch" Name ="questlist" Grid.IsSharedSizeScope="True">
                 </ListBox>
 
+                <ListBox ItemsSource="{Binding CheckList}"
+             ItemTemplate="{StaticResource MyDataTemplate2}"
+             HorizontalContentAlignment="Stretch"
+                 Visibility="Collapsed" Name ="checklist" Grid.IsSharedSizeScope="True" Height="300">
 
-
+                </ListBox>
             </StackPanel>
-                </ScrollViewer>
         </Border>
+
+
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+            <!--<Button Command="{Binding SubmitCommand}"></Button>-->
+
+            <!--<Button Command="{Binding SubmitCommand}"></Button>-->
+            <Button Click="Submit_Button_Click" Width="100" Height="30" Content="Continue" Visibility="Visible" x:Name="submit_button" Margin="10,15,0,0" Background="#004B87" HorizontalAlignment="Right" FontWeight="Bold"/>
+            <Button Click="Finish_Button_Click" Width="100" Height="30" Content="Finish" Visibility="Collapsed" x:Name="finish_button" Margin="10,15,0,0" Background="#004B87" HorizontalAlignment="Right" FontWeight="Bold"/>
+
+            <Button Click="Exit_Button_Click" Width="100" Height="30" Content="Cancel" Visibility="Visible" x:Name="exit_button" Margin="10,15,10,0" Background="#0085CA" HorizontalAlignment="Right" FontWeight="Bold"/>
+
+
         </StackPanel>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-        <!--<Button Command="{Binding SubmitCommand}"></Button>-->
-            <Button Click="Submit_Button_Click" Width="100" Height="30" Content="Go to CheckList" Visibility="Visible" Name="submit_button" Margin="10,15,10,0" Background="Gray" HorizontalAlignment="Center"/>
-
-            <Button Click="Finish_Button_Click" Width="100" Height="30" Content="Submit" Visibility="Collapsed" Name="finish_button" Margin="10,15,10,0" Background="Gray" HorizontalAlignment="Center"/>
-
-            <Button Click="Exit_Button_Click" Width="100" Height="30" Content="Exit" Visibility="Visible" Name="exit_button" Margin="10,15,10,0" Background="Gray" HorizontalAlignment="Center"/>
-        </StackPanel>
-        
     </StackPanel>
-    
-    
+
+
 </Window>

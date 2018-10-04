@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CheckListToolWPF.Model;
 using CheckListToolWPF.CommitCheckList;
+using System.Threading;
 
 namespace CheckListToolWPF
 {
@@ -52,11 +53,16 @@ namespace CheckListToolWPF
             int count = 0;
             var checklistModel = (DataContext as FilterQuestionsViewNodel).SetCheckList();
 
-            if(checklistModel == null || !(DataContext as FilterQuestionsViewNodel).SeTImpactInExcel())
+            if(checklistModel == null)
             {
                 return;
             }
 
+            if((DataContext as FilterQuestionsViewNodel).WorkItem == null || (DataContext as FilterQuestionsViewNodel).WorkItem == String.Empty)
+            {
+                MessageBox.Show("Please enter workItem Id");
+                return;
+            }
 
             checklistModel.ForEach(check =>
             {
@@ -74,14 +80,28 @@ namespace CheckListToolWPF
             finish_button.Visibility = Visibility.Visible;
             impactSection.Visibility = Visibility.Collapsed;
 
-            (DataContext as FilterQuestionsViewNodel).FormHeight = 350;
-            header.Content = "                 Checklist";
+            Title1.Visibility = Visibility.Collapsed;
+            Title2.Visibility = Visibility.Visible;
+
+            (DataContext as FilterQuestionsViewNodel).FormHeight = 460;
         }
+
+        public delegate void ImpactInExcel();
+
+
         private void Finish_Button_Click(object sender, RoutedEventArgs e)
         {
-            if((DataContext as FilterQuestionsViewNodel).SetCheckResults())
+            ImpactInExcel caller = new ImpactInExcel((DataContext as FilterQuestionsViewNodel).SeTImpactInExcel);
+
+
+            caller.BeginInvoke(null,null);
+            
+            //(DataContext as FilterQuestionsViewNodel).SeTImpactInExcel();
+
+            if ((DataContext as FilterQuestionsViewNodel).SetCheckResults())
             {
                 MessageBox.Show("Now your commit will be safer!");
+                SpinWait.SpinUntil(() => (DataContext as FilterQuestionsViewNodel).Finished);
                 System.Windows.Application.Current.Shutdown();
             }
         }
