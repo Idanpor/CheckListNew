@@ -8,6 +8,9 @@
         Title="Checklist Tool" Height="{Binding FormHeight,Mode=TwoWay}" Grid.IsSharedSizeScope="True" Width="560" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
         Icon="{Binding IconPath}" ResizeMode="NoResize">
     <Window.Resources>
+        <Image x:Key="LeftArrowImage" Source ="{Binding LeftArrow}"/>
+        <Image x:Key="RightArrowImage" Source ="{Binding RightArrow}"/>
+        
         <Style x:Key="SwitchTypeToggleButton"
        TargetType="{x:Type ToggleButton}">
 
@@ -59,7 +62,7 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate>
-                                <TextBlock FontSize="24"
+                                <TextBlock FontSize="17"
                                    Foreground="White"
                                    Style="{StaticResource ToggleButtonContentTextbox}"
                                    Text="X" />
@@ -300,7 +303,10 @@
         </DataTemplate>
     </Window.Resources>
     <StackPanel>
-
+        <StackPanel Orientation="Horizontal">
+            <Button Click="Back_Button_Click" Name="BackButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Content="{StaticResource LeftArrowImage}" Width="24" Height="24" BorderThickness="0" HorizontalAlignment="Left" Visibility="Hidden"/>
+        <Button Click="Continue_Button_Click" Name="ContinueButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Content="{StaticResource RightArrowImage}" Width="24" Height="24" BorderThickness="0" HorizontalAlignment="Left" Visibility="Hidden"/>
+        </StackPanel>
         <StackPanel Name="impactSection">
             <Label  Height="40" Width="250" Content="Impact Analysis: " FontSize="16" FontWeight="Bold" HorizontalAlignment="Left"/>
             <Border BorderThickness="2">
@@ -320,7 +326,7 @@
 
             </Border>
         </StackPanel>
-        <Separator BorderBrush="Black" Height="20"/>
+        <Separator Name="sparator" BorderBrush="Black" Height="20" Visibility="Visible"/>
         <Label Name="Title1"  Height="40" Width="250" Content="Checklist-Filter Questions: " FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" Visibility="Visible"/>
         <Label Name="Title2"  Height="40" Width="250" Content="Checklist-Final: " FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" Visibility="Collapsed"/>
 
@@ -335,7 +341,7 @@
                 <ListBox ItemsSource="{Binding CheckList}"
              ItemTemplate="{StaticResource MyDataTemplate2}"
              HorizontalContentAlignment="Stretch"
-                 Visibility="Collapsed" Name ="checklist" Grid.IsSharedSizeScope="True" Height="300">
+                 Visibility="Collapsed" Name ="checklist" Grid.IsSharedSizeScope="True" Height="250">
 
                 </ListBox>
             </StackPanel>
@@ -347,12 +353,12 @@
             <!--<Button Command="{Binding SubmitCommand}"></Button>-->
 
             <!--<Button Command="{Binding SubmitCommand}"></Button>-->
-            <Button Click="Submit_Button_Click" Width="100" Height="30" Content="Continue" Visibility="Visible" x:Name="submit_button" Margin="10,15,0,0" Background="#004B87" HorizontalAlignment="Right" FontWeight="Bold"/>
-            <Button Click="Finish_Button_Click" Width="100" Height="30" Content="Finish" Visibility="Collapsed" x:Name="finish_button" Margin="10,15,0,0" Background="#004B87" HorizontalAlignment="Right" FontWeight="Bold"/>
+            <Button Click="Submit_Button_Click" Width="100" Height="30" Content="Continue" Visibility="Visible" x:Name="submit_button" Margin="10,15,0,0" Background="#0085CA" HorizontalAlignment="Right" FontWeight="Bold"/>
+            <Button Click="Finish_Button_Click" Width="100" Height="30" Content="Finish" Visibility="Collapsed" x:Name="finish_button" Margin="10,15,0,0" Background="#0085CA" HorizontalAlignment="Right" FontWeight="Bold"/>
 
-            <Button Click="Exit_Button_Click" Width="100" Height="30" Content="Cancel" Visibility="Visible" x:Name="exit_button" Margin="10,15,10,0" Background="#0085CA" HorizontalAlignment="Right" FontWeight="Bold"/>
-
-
+            <Button Click="Exit_Button_Click" Width="100" Height="30" Content="Cancel" Visibility="Visible" x:Name="exit_button" Margin="10,15,10,0" Background="#004B87" HorizontalAlignment="Right" FontWeight="Bold"/>
+            <!--<Button Click="Back_Button_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderThickness="0" FontFamily="Marlett" FontSize="20" Content="3" Width="50" HorizontalAlignment="Left"/>-->
+           
         </StackPanel>
 
     </StackPanel>

@@ -82,5 +82,29 @@ namespace CheckListToolWPF.Properties {
                 this["IconPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("R:\\CT Apps\\Tools\\Commit_CheckList\\left_Arrow.png")]
+        public string Left_Arrow {
+            get {
+                return ((string)(this["Left_Arrow"]));
+            }
+            set {
+                this["Left_Arrow"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("R:\\CT Apps\\Tools\\Commit_CheckList\\Right_Arrow.png")]
+        public string Right_Arrow {
+            get {
+                return ((string)(this["Right_Arrow"]));
+            }
+            set {
+                this["Right_Arrow"] = value;
+            }
+        }
     }
 }

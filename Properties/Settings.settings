@@ -17,5 +17,11 @@
     <Setting Name="IconPath" Type="System.String" Scope="User">
       <Value Profile="(Default)">R:\CT Apps\Tools\Commit_CheckList\check.png</Value>
     </Setting>
+    <Setting Name="Left_Arrow" Type="System.String" Scope="User">
+      <Value Profile="(Default)">R:\CT Apps\Tools\Commit_CheckList\left_Arrow.png</Value>
+    </Setting>
+    <Setting Name="Right_Arrow" Type="System.String" Scope="User">
+      <Value Profile="(Default)">R:\CT Apps\Tools\Commit_CheckList\Right_Arrow.png</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

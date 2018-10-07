@@ -48,6 +48,44 @@ namespace CheckListToolWPF
             DataContext = new FilterQuestionsViewNodel(questionModelList, impactModelList);
         }
 
+
+
+        private void Continue_Button_Click(object sender, RoutedEventArgs e)
+        {
+            BackButton.Visibility = Visibility.Visible;
+            ContinueButton.Visibility = Visibility.Hidden;
+            (DataContext as FilterQuestionsViewNodel).CanContinue = false;
+            (DataContext as FilterQuestionsViewNodel).FormHeight = 460;
+            questlist.Visibility = Visibility.Collapsed;
+            checklist.Visibility = Visibility.Visible;
+            submit_button.Visibility = Visibility.Collapsed;
+            finish_button.Visibility = Visibility.Visible;
+
+            impactSection.Visibility = Visibility.Collapsed;
+
+            Title1.Visibility = Visibility.Collapsed;
+            Title2.Visibility = Visibility.Visible;
+            sparator.Visibility = Visibility.Collapsed;
+        }
+
+        private void Back_Button_Click(object sender, RoutedEventArgs e)
+        {
+            BackButton.Visibility = Visibility.Hidden;
+            ContinueButton.Visibility = Visibility.Visible;
+            (DataContext as FilterQuestionsViewNodel).CanContinue = true;
+            (DataContext as FilterQuestionsViewNodel).FormHeight = 700;
+            questlist.Visibility = Visibility.Visible;
+            checklist.Visibility = Visibility.Collapsed;
+            submit_button.Visibility = Visibility.Visible;
+            finish_button.Visibility = Visibility.Collapsed;
+
+            impactSection.Visibility = Visibility.Visible;
+
+            Title1.Visibility = Visibility.Visible;
+            Title2.Visibility = Visibility.Collapsed;
+            sparator.Visibility = Visibility.Visible;
+        }
+
         private void Submit_Button_Click(object sender, RoutedEventArgs e)
         {
             int count = 0;
@@ -72,8 +110,8 @@ namespace CheckListToolWPF
                 (DataContext as FilterQuestionsViewNodel).CheckList.Add(check);
             });
 
-            
 
+            BackButton.Visibility = Visibility.Visible;
             questlist.Visibility = Visibility.Collapsed;
             checklist.Visibility = Visibility.Visible;
             submit_button.Visibility = Visibility.Collapsed;
@@ -82,8 +120,11 @@ namespace CheckListToolWPF
 
             Title1.Visibility = Visibility.Collapsed;
             Title2.Visibility = Visibility.Visible;
+            sparator.Visibility = Visibility.Collapsed;
 
             (DataContext as FilterQuestionsViewNodel).FormHeight = 460;
+
+            (DataContext as FilterQuestionsViewNodel).CanContinue = false;
         }
 
         public delegate void ImpactInExcel();

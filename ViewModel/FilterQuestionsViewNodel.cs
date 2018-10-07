@@ -41,6 +41,23 @@ namespace CheckListToolWPF.ViewModel
             }
         }
 
+        private bool canContinue;
+        public bool CanContinue
+        {
+            get
+            {
+                return canContinue;
+            }
+
+            set
+            {
+                canContinue = value;
+                OnPropertyChanged();
+            }
+        }
+
+        
+
         private string workItem;
         public string WorkItem
         {
@@ -66,7 +83,37 @@ namespace CheckListToolWPF.ViewModel
 
             set
             {
-                workItem = value;
+                iconPath = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string leftArrow;
+        public string LeftArrow
+        {
+            get
+            {
+                return Settings.Default.Left_Arrow;
+            }
+
+            set
+            {
+                leftArrow = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string rightArrow;
+        public string RightArrow
+        {
+            get
+            {
+                return Settings.Default.Right_Arrow;
+            }
+
+            set
+            {
+                rightArrow = value;
                 OnPropertyChanged();
             }
         }
