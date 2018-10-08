@@ -294,10 +294,10 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock Grid.Column="0"
-                   Text="{Binding Path=CheckDescription}" Padding="5,0,0,0" />
+                   Text="{Binding Path=CheckDescription}" Padding="5,0,0,0" ToolTip="{Binding Path=CheckToolTip}"/>
                 <!--<CheckBox Grid.Column="1"  HorizontalAlignment="Center" Style="{DynamicResource CheckBoxStyle1}" VerticalAlignment="Center" IsChecked="{Binding Path=IsDoneCheckBox}" Padding="5,0,0,0" Margin="20,0,0,0"></CheckBox>-->
 
-                <ToggleButton Grid.Column="1"  HorizontalAlignment="Center" Style="{DynamicResource SwitchTypeToggleButton}" VerticalAlignment="Center" IsChecked="{Binding Path=IsYesCheckBox}" Padding="5,0,0,0" Margin="20,0,0,0"></ToggleButton>
+                <ToggleButton Grid.Column="1"  HorizontalAlignment="Center" Style="{DynamicResource SwitchTypeToggleButton}" VerticalAlignment="Center" IsChecked="{Binding Path=IsDoneCheckBox}" Padding="5,0,0,0" Margin="20,0,0,0"/>
                 <!--<RadioButton Grid.Column="1" GroupName="{Binding Path = GroupNameDone}" Content="Done" IsChecked="{Binding Path=IsDoneCheckBox}" Padding="5,0,0,0" />
                 <RadioButton Grid.Column="2" GroupName="{Binding Path = GroupNameDone}" Content="Not Relevant" IsChecked="{Binding Path=IsNotRelevantCheckBox}" Padding="5,0,0,0" Margin="20,0,0,0" />-->
 
