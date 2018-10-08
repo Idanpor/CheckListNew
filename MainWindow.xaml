@@ -4,13 +4,15 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CheckListToolWPF"
-        mc:Ignorable="d"
+        mc:Ignorable="d"    
         Title="Checklist Tool" Height="{Binding FormHeight,Mode=TwoWay}" Grid.IsSharedSizeScope="True" Width="560" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
         Icon="{Binding IconPath}" ResizeMode="NoResize">
     <Window.Resources>
         <Image x:Key="LeftArrowImage" Source ="{Binding LeftArrow}"/>
         <Image x:Key="RightArrowImage" Source ="{Binding RightArrow}"/>
-        
+        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
+            <Setter Property="Foreground" Value="LightGray"/>
+        </Style>
         <Style x:Key="SwitchTypeToggleButton"
        TargetType="{x:Type ToggleButton}">
 
@@ -353,10 +355,10 @@
             <!--<Button Command="{Binding SubmitCommand}"></Button>-->
 
             <!--<Button Command="{Binding SubmitCommand}"></Button>-->
-            <Button Click="Submit_Button_Click" Width="100" Height="30" Content="Continue" Visibility="Visible" x:Name="submit_button" Margin="10,15,0,0" Background="#0085CA" HorizontalAlignment="Right" FontWeight="Bold"/>
-            <Button Click="Finish_Button_Click" Width="100" Height="30" Content="Finish" Visibility="Collapsed" x:Name="finish_button" Margin="10,15,0,0" Background="#0085CA" HorizontalAlignment="Right" FontWeight="Bold"/>
+            <Button Style="{DynamicResource ButtonStyle}" Click="Submit_Button_Click" Width="100" Height="30" Content="Continue" Visibility="Visible" x:Name="submit_button" Margin="10,15,0,0" Background="#0085CA" HorizontalAlignment="Right" FontWeight="Bold"/>
+            <Button Style="{DynamicResource ButtonStyle}" Click="Finish_Button_Click" Width="100" Height="30" Content="Finish" Visibility="Collapsed" x:Name="finish_button" Margin="10,15,0,0" Background="#0085CA" HorizontalAlignment="Right" FontWeight="Bold"/>
 
-            <Button Click="Exit_Button_Click" Width="100" Height="30" Content="Cancel" Visibility="Visible" x:Name="exit_button" Margin="10,15,10,0" Background="#004B87" HorizontalAlignment="Right" FontWeight="Bold"/>
+            <Button Style="{DynamicResource ButtonStyle}" Click="Exit_Button_Click" Width="100" Height="30" Content="Cancel" Visibility="Visible" x:Name="exit_button" Margin="10,15,10,0" Background="#004B87" HorizontalAlignment="Right" FontWeight="Bold"/>
             <!--<Button Click="Back_Button_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderThickness="0" FontFamily="Marlett" FontSize="20" Content="3" Width="50" HorizontalAlignment="Left"/>-->
            
         </StackPanel>
