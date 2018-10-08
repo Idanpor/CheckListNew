@@ -106,5 +106,17 @@ namespace CheckListToolWPF.Properties {
                 this["Right_Arrow"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("R:\\CT Apps\\Tools\\Commit_CheckList\\ImpactAnalysisConfig\\ExcelQuestions.xml")]
+        public string ImpactAnalysisConfig {
+            get {
+                return ((string)(this["ImpactAnalysisConfig"]));
+            }
+            set {
+                this["ImpactAnalysisConfig"] = value;
+            }
+        }
     }
 }

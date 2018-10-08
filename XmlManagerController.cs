@@ -1,19 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
-//using System.Windows.Forms.VisualStyles;
 using System.Xml;
-using CheckListToolWPF;
-using System.Configuration;
-using System.Linq;
-//using System.Windows.Forms.PropertyGridInternal;
 using CheckListToolWPF.Properties;
-using Microsoft.Win32;
 using CheckListToolWPF.Model;
-//using ConfigurationManager = System.Configuration.ConfigurationManager;
 
 namespace CheckListToolWPF
 {
@@ -24,26 +16,11 @@ namespace CheckListToolWPF
         public class XmlManagerController
         {
             private static readonly string configPath = Directory.GetCurrentDirectory() + @"\ConfigFile.xml";
-            private static readonly string checkListPathFromConfig = Settings.Default.CheckListPath;// GetCheckListPath();
-            private static readonly string usageXmlPath = Settings.Default.UsersCommitsPath;//GetUsersCommitsPath();//checkListPathFromConfig + @"\Users.xml";
-            private static readonly string checkListGroupXmlPath = Settings.Default.CheckListGroupPath;//GetCheckListGroupPath();//checkListPathFromConfig + @"\CheckListGroups";//@"R:\Users\idanp\Commit_CheckList\CheckListGroups";
+            private static readonly string checkListPathFromConfig = Settings.Default.CheckListPath;
+            private static readonly string usageXmlPath = Settings.Default.UsersCommitsPath;
+            private static readonly string checkListGroupXmlPath = Settings.Default.CheckListGroupPath;
             private static readonly string defaultCheckListXmlPath = checkListGroupXmlPath + @"\DefaultCheckList.xml";
-            private static readonly string excelQuestionsXmlPath = checkListGroupXmlPath + @"\ExcelQuestions.xml";
-
-            //public static void CreateNode(string UserId)
-            //{
-            //    XmlDocument doc = new XmlDocument();
-            //    doc.Load(usageXmlPath);
-            //    string UserIdElement = "UserId-" + UserId;
-            //    //Create a new node and add it to the document.
-            //    XmlNode elem = doc.CreateNode(XmlNodeType.Element, UserIdElement, null);
-            //    elem.InnerText = DateTime.Now.ToString(CultureInfo.InvariantCulture);
-            //    if (doc.DocumentElement != null)
-            //    {
-            //        doc.DocumentElement.AppendChild(elem);
-            //    }
-            //    doc.Save(usageXmlPath);
-            //}
+            private static readonly string excelQuestionsXmlPath = Settings.Default.ImpactAnalysisConfig;
 
             public static string GetDeveloperName()
             {
@@ -101,12 +78,6 @@ namespace CheckListToolWPF
                     }
                 }
 
-                //if (xmlportalRun != null)
-                //{
-                //    quest = xmlportalRun.InnerText;
-                //    if (quest != String.Empty)
-                //        questList.Add(quest);
-                //}
                 xml.Save(excelQuestionsXmlPath);
                 return questList;
             }
@@ -114,7 +85,7 @@ namespace CheckListToolWPF
             public static List<string> GetQuestions()
             {
                 var questList = new List<string>();
-                foreach (var file in Directory.GetFiles(checkListGroupXmlPath).Where(f => f != excelQuestionsXmlPath))
+                foreach (var file in Directory.GetFiles(checkListGroupXmlPath))
                 {
                     string quest;
                     XmlDocument xml = new XmlDocument();
@@ -135,7 +106,7 @@ namespace CheckListToolWPF
             public static List<CheckModel> GetChecks()
             {
                 var checkList = new List<CheckModel>();
-                foreach (var file in Directory.GetFiles(checkListGroupXmlPath).Where(f => f != excelQuestionsXmlPath))
+                foreach (var file in Directory.GetFiles(checkListGroupXmlPath))
                 {
                     string quest = null;
                     XmlDocument xml = new XmlDocument();
@@ -151,7 +122,6 @@ namespace CheckListToolWPF
                     if ((dictionaryChecks.TryGetValue(quest, out questIn) && questIn) || (file == defaultCheckListXmlPath))
                     {
                         var matchingElements = xml.SelectNodes("/GroupChecks/Checks/Check/CheckDescription");
-                        //var excelColumnNumber = xml.SelectNodes("/GroupChecks/Checks/Check/ExcelColumnNumber");
                         if (matchingElements != null)
                         {
                             foreach (var matchingElement in matchingElements)
@@ -165,12 +135,6 @@ namespace CheckListToolWPF
                                     {
                                         check.CheckToolTip = nextSibling?.InnerText;
                                     }
-                                    //var excelColumnNumberSibling = nextSibling?.NextSibling;
-                                    //if (excelColumnNumberSibling != null)
-                                    //{
-                                    //    check.ExcelColumnNumber = (excelColumnNumberSibling?.InnerText != String.Empty) ? int.Parse(excelColumnNumberSibling?.InnerText) : 0;
-                                    //}
-
 
                                     if (check.CheckDescription != String.Empty)
                                     {
@@ -189,46 +153,40 @@ namespace CheckListToolWPF
             //Get data Path
             public static string GetCheckListPath()
             {
-                //Logger.Log("Enter GetCheckListPath()  " + configPath);
                 string checkListPath = String.Empty;
                 XmlDocument xml = new XmlDocument();
                 xml.Load(configPath);
-                XmlNode xmlportalRun = xml.SelectSingleNode("/Config/CheckListPath");//.InnerText;
+                XmlNode xmlportalRun = xml.SelectSingleNode("/Config/CheckListPath");
                 if (xmlportalRun != null)
                 {
                     checkListPath = xmlportalRun.InnerText;
                 }
-                //Logger.Log("Finish GetCheckListPath()");
                 return checkListPath;
             }
 
             public static string GetCheckListGroupPath()
             {
-               // Logger.Log("Enter GetCheckListGroupPath()");
                 string checkListGroupPath = String.Empty;
                 XmlDocument xml = new XmlDocument();
                 xml.Load(configPath);
-                XmlNode xmlportalRun = xml.SelectSingleNode("/Config/CheckListGroupPath");//.InnerText;
+                XmlNode xmlportalRun = xml.SelectSingleNode("/Config/CheckListGroupPath");
                 if (xmlportalRun != null)
                 {
                     checkListGroupPath = xmlportalRun.InnerText;
                 }
-                //Logger.Log("Finish GetCheckListGroupPath()");
                 return checkListGroupPath;
             }
 
             public static string GetUsersCommitsPath()
             {
-                //Logger.Log("Enter GetCheckListGroupPath()");
                 string usersCommitsPath = String.Empty;
                 XmlDocument xml = new XmlDocument();
                 xml.Load(configPath);
-                XmlNode xmlportalRun = xml.SelectSingleNode("/Config/UsersCommitsPath");//.InnerText;
+                XmlNode xmlportalRun = xml.SelectSingleNode("/Config/UsersCommitsPath");
                 if (xmlportalRun != null)
                 {
                     usersCommitsPath = xmlportalRun.InnerText;
                 }
-                //Logger.Log("Finish GetCheckListGroupPath()");
                 return usersCommitsPath;
             }
 

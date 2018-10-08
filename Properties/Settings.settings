@@ -23,5 +23,8 @@
     <Setting Name="Right_Arrow" Type="System.String" Scope="User">
       <Value Profile="(Default)">R:\CT Apps\Tools\Commit_CheckList\Right_Arrow.png</Value>
     </Setting>
+    <Setting Name="ImpactAnalysisConfig" Type="System.String" Scope="User">
+      <Value Profile="(Default)">R:\CT Apps\Tools\Commit_CheckList\ImpactAnalysisConfig\ExcelQuestions.xml</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
