@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Input;
 using CheckListToolWPF.CommitCheckList;
 using CheckListToolWPF.Properties;
+using System.Threading;
 
 namespace CheckListToolWPF.ViewModel
 {
@@ -22,8 +23,11 @@ namespace CheckListToolWPF.ViewModel
 
         public ObservableCollection<QuestionForExcel> ImpactList { get; set; }
 
-        public DelegateCommand SubmitCommand { get; private set; }
+        public DelegateCommand ContinueCommand { get; private set; }
 
+        public DelegateCommand BackCommand { get; private set; }
+
+        public DelegateCommand FinishCommand { get; private set; }
 
 
         private int formHeight;
@@ -55,6 +59,8 @@ namespace CheckListToolWPF.ViewModel
                 OnPropertyChanged();
             }
         }
+
+        public bool CanBack { get { return !canContinue; } }
 
         
 
@@ -132,8 +138,62 @@ new ObservableCollection<QuestionForExcel>();
             impactModelList.ForEach(e => ImpactList.Add(e));
 
             CheckList = new ObservableCollection<CheckModel>();
+            canContinue = true;
+            ContinueCommand = new DelegateCommand(Continue, CanContinue);
+            BackCommand = new DelegateCommand(Back, CanBack);
+            FinishCommand = new DelegateCommand(Finish);
         }
 
+        public delegate void ImpactInExcel();
+        private void Finish()
+        {
+            ImpactInExcel caller = new ImpactInExcel(SeTImpactInExcel);
+
+            caller.BeginInvoke(null, null);
+
+            if (SetCheckResults())
+            {
+                MessageBox.Show("Now your commit will be safer!");
+                SpinWait.SpinUntil(() => Finished);
+                System.Windows.Application.Current.Shutdown();
+            };
+        }
+
+        private void Back()
+        {
+            FormHeight = 700;
+            CanContinue = true;
+        }
+
+        private void Continue()
+        {
+            int count = 0;
+            var checklistModel = SetCheckList();
+
+            if (checklistModel == null)
+            {
+                return;
+            }
+
+            if (WorkItem == null || WorkItem == String.Empty)
+            {
+                MessageBox.Show("Please enter workItem Id");
+                return;
+            }
+
+            CheckList.Clear();
+            checklistModel.ForEach(check =>
+            {
+                check.GroupNameDone = "GroupNameDone" + count;
+                check.GroupNameNoRelevant = "GroupNameNoRelevant" + count;
+                count++;
+                CheckList.Add(check);
+            });
+
+            FormHeight = 460;
+
+            CanContinue = false;
+        }
 
         internal List<CheckModel> SetCheckList()
         {
@@ -162,7 +222,23 @@ new ObservableCollection<QuestionForExcel>();
                 }
                 ExcelManagerController.Close();
             }
+            if (Settings.Default.SendExcelByMail)
+            {
+                CreateMailItem(WorkItem);
+            }
             Finished = true;
+        }
+
+        private void CreateMailItem(string workItemNum)
+        {
+            Microsoft.Office.Interop.Outlook.Application app = new Microsoft.Office.Interop.Outlook.Application();
+            Microsoft.Office.Interop.Outlook.MailItem mailItem = app.CreateItem(Microsoft.Office.Interop.Outlook.OlItemType.olMailItem);
+            mailItem.Subject = "Impact Analysis - New Item wad added: " + workItemNum;
+            mailItem.To = Settings.Default.MailRecipients;
+            mailItem.Body = "WorkItem number : " + workItem + " was added!";
+            mailItem.Attachments.Add(Settings.Default.ImpactAnalysisExcelPath);
+            mailItem.Display(false);
+            mailItem.Send();
         }
 
         internal bool SetCheckResults()

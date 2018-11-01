@@ -3,11 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:conv ="clr-namespace:CheckListToolWPF.Converter"
         xmlns:local="clr-namespace:CheckListToolWPF"
         mc:Ignorable="d"    
         Title="Checklist Tool" Height="{Binding FormHeight,Mode=TwoWay}" Grid.IsSharedSizeScope="True" Width="560" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
         Icon="{Binding IconPath}" ResizeMode="NoResize">
     <Window.Resources>
+        <conv:BoolToVisibilityConverter x:Key="FirstStage"/>
+        <conv:BoolToVisibilityConverter x:Key="SecondStage" Negate="True"/>
+        
         <Image x:Key="LeftArrowImage" Source ="{Binding LeftArrow}"/>
         <Image x:Key="RightArrowImage" Source ="{Binding RightArrow}"/>
         <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
@@ -306,10 +310,10 @@
     </Window.Resources>
     <StackPanel>
         <StackPanel Orientation="Horizontal">
-            <Button Click="Back_Button_Click" Name="BackButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Content="{StaticResource LeftArrowImage}" Width="24" Height="24" BorderThickness="0" HorizontalAlignment="Left" Visibility="Hidden"/>
-        <Button Click="Continue_Button_Click" Name="ContinueButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Content="{StaticResource RightArrowImage}" Width="24" Height="24" BorderThickness="0" HorizontalAlignment="Left" Visibility="Hidden"/>
+            <Button Command="{Binding BackCommand}" Name="BackButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Content="{StaticResource LeftArrowImage}" Width="24" Height="24" BorderThickness="0" HorizontalAlignment="Left" Visibility="{Binding CanContinue, Converter={StaticResource SecondStage}}"/>
+            <Button Command="{Binding ContinueCommand}" Name="ContinueButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Content="{StaticResource RightArrowImage}" Width="24" Height="24" BorderThickness="0" HorizontalAlignment="Left" Visibility="{Binding CanContinue, Converter={StaticResource FirstStage}}"/>
         </StackPanel>
-        <StackPanel Name="impactSection">
+        <StackPanel Name="impactSection"  Visibility="{Binding CanContinue, Converter={StaticResource FirstStage}}">
             <Label  Height="40" Width="250" Content="Impact Analysis: " FontSize="16" FontWeight="Bold" HorizontalAlignment="Left"/>
             <Border BorderThickness="2">
 
@@ -322,28 +326,28 @@
                     <ListBox ItemsSource="{Binding ImpactList}"
              ItemTemplate="{StaticResource MyDataTemplate}"
              HorizontalContentAlignment="Stretch"
-                 Visibility="Visible" Margin="0,7,0,7" Grid.IsSharedSizeScope="True"/>
+                 Margin="0,7,0,7" Grid.IsSharedSizeScope="True"/>
 
                 </StackPanel>
 
             </Border>
         </StackPanel>
-        <Separator Name="sparator" BorderBrush="Black" Height="20" Visibility="Visible"/>
-        <Label Name="Title1"  Height="40" Width="250" Content="Checklist-Filter Questions: " FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" Visibility="Visible"/>
-        <Label Name="Title2"  Height="40" Width="250" Content="Checklist-Final: " FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" Visibility="Collapsed"/>
+        <Separator Name="sparator" BorderBrush="Black" Height="20" Visibility="{Binding CanContinue, Converter={StaticResource FirstStage}}"/>
+        <Label Name="Title1"  Height="40" Width="250" Content="Checklist-Filter Questions: " FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" Visibility="{Binding CanContinue, Converter={StaticResource FirstStage}}"/>
+        <Label Name="Title2"  Height="40" Width="250" Content="Checklist-Final: " FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" Visibility="{Binding CanContinue, Converter={StaticResource SecondStage}}"/>
 
         <Border BorderThickness="2">
             <StackPanel>
 
                 <ListBox ItemsSource="{Binding QuestionList}"
              ItemTemplate="{StaticResource MyDataTemplate}"
-             HorizontalContentAlignment="Stretch" Name ="questlist" Grid.IsSharedSizeScope="True">
+             HorizontalContentAlignment="Stretch" Name ="questlist" Grid.IsSharedSizeScope="True"  Visibility="{Binding CanContinue, Converter={StaticResource FirstStage}}">
                 </ListBox>
 
                 <ListBox ItemsSource="{Binding CheckList}"
              ItemTemplate="{StaticResource MyDataTemplate2}"
              HorizontalContentAlignment="Stretch"
-                 Visibility="Collapsed" Name ="checklist" Grid.IsSharedSizeScope="True" Height="250">
+                 Visibility="{Binding CanContinue, Converter={StaticResource SecondStage}}" Name ="checklist" Grid.IsSharedSizeScope="True" Height="250">
 
                 </ListBox>
             </StackPanel>
@@ -355,10 +359,10 @@
             <!--<Button Command="{Binding SubmitCommand}"></Button>-->
 
             <!--<Button Command="{Binding SubmitCommand}"></Button>-->
-            <Button Style="{DynamicResource ButtonStyle}" Click="Submit_Button_Click" Width="100" Height="30" Content="Continue" Visibility="Visible" x:Name="submit_button" Margin="10,15,0,0" Background="#0085CA" HorizontalAlignment="Right" FontWeight="Bold"/>
-            <Button Style="{DynamicResource ButtonStyle}" Click="Finish_Button_Click" Width="100" Height="30" Content="Finish" Visibility="Collapsed" x:Name="finish_button" Margin="10,15,0,0" Background="#0085CA" HorizontalAlignment="Right" FontWeight="Bold"/>
+            <Button Style="{DynamicResource ButtonStyle}" Command="{Binding ContinueCommand}" Width="100" Height="30" Content="Continue" Visibility="{Binding CanContinue, Converter={StaticResource FirstStage}}" x:Name="submit_button" Margin="10,15,0,0" Background="#0085CA" HorizontalAlignment="Right" FontWeight="Bold"/>
+            <Button Style="{DynamicResource ButtonStyle}" Command="{Binding FinishCommand}" Width="100" Height="30" Content="Finish" Visibility="{Binding CanContinue, Converter={StaticResource SecondStage}}" x:Name="finish_button" Margin="10,15,0,0" Background="#0085CA" HorizontalAlignment="Right" FontWeight="Bold"/>
 
-            <Button Style="{DynamicResource ButtonStyle}" Click="Exit_Button_Click" Width="100" Height="30" Content="Cancel" Visibility="Visible" x:Name="exit_button" Margin="10,15,10,0" Background="#004B87" HorizontalAlignment="Right" FontWeight="Bold"/>
+            <Button Style="{DynamicResource ButtonStyle}" Click="Exit_Button_Click" Width="100" Height="30" Content="Cancel" x:Name="exit_button" Margin="10,15,10,0" Background="#004B87" HorizontalAlignment="Right" FontWeight="Bold"/>
             <!--<Button Click="Back_Button_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderThickness="0" FontFamily="Marlett" FontSize="20" Content="3" Width="50" HorizontalAlignment="Left"/>-->
            
         </StackPanel>

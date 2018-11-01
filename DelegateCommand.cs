@@ -72,6 +72,8 @@ namespace CheckListToolWPF
     /// <seealso cref="DelegateCommand{T}"/>
     public class DelegateCommand : DelegateCommandBase
     {
+        private bool canContinue;
+
         /// <summary>
         /// Creates a new instance of <see cref="DelegateCommand"/> with the <see cref="Action"/> to invoke on execution.
         /// </summary>
@@ -92,6 +94,11 @@ namespace CheckListToolWPF
         {
             if (executeMethod == null || canExecuteMethod == null)
                 throw new ArgumentNullException("executeMethod");
+        }
+
+        public DelegateCommand(Action executeMethod, bool canContinue) : this(executeMethod)
+        {
+            this.canContinue = canContinue;
         }
 
 
