@@ -26,11 +26,11 @@
     <Setting Name="ImpactAnalysisConfig" Type="System.String" Scope="User">
       <Value Profile="(Default)">R:\CT Apps\Tools\Commit_CheckList\ImpactAnalysisConfig\ExcelQuestions.xml</Value>
     </Setting>
-    <Setting Name="SendExcelByMail" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">False</Value>
-    </Setting>
     <Setting Name="MailRecipients" Type="System.String" Scope="User">
       <Value Profile="(Default)">neta.granot@philips.com</Value>
+    </Setting>
+    <Setting Name="SendExcelByMail" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

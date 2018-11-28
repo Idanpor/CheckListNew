@@ -121,18 +121,6 @@ namespace CheckListToolWPF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool SendExcelByMail {
-            get {
-                return ((bool)(this["SendExcelByMail"]));
-            }
-            set {
-                this["SendExcelByMail"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("neta.granot@philips.com")]
         public string MailRecipients {
             get {
@@ -140,6 +128,18 @@ namespace CheckListToolWPF.Properties {
             }
             set {
                 this["MailRecipients"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SendExcelByMail {
+            get {
+                return ((bool)(this["SendExcelByMail"]));
+            }
+            set {
+                this["SendExcelByMail"] = value;
             }
         }
     }
