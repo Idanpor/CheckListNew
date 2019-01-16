@@ -157,13 +157,16 @@ new ObservableCollection<QuestionForExcel>();
 
         private void Cancel()
         {
+            Log.Write("Cancel button was clicked");
             Microsoft.Shell.SingleInstance<App>.Cleanup();
             System.Windows.Application.Current.Shutdown();
+            Log.Write("Application was ended");
         }
 
         public delegate void ImpactInExcel();
         private void Finish()
         {
+            Log.Write("Finish button was clicked");
             ImpactInExcel caller = new ImpactInExcel(SeTImpactInExcel);
 
             caller.BeginInvoke(null, null);
@@ -173,19 +176,23 @@ new ObservableCollection<QuestionForExcel>();
                 MessageBox.Show("Now your commit will be safer!");
                 SpinWait.SpinUntil(() => Finished);
                 System.Windows.Application.Current.Shutdown();
+                Log.Write("Application was ended");
             };
         }
 
         private void Back()
         {
+            Log.Write("Back button was clicked");
             FormHeight = 700;
             CanContinue = true;
         }
 
         private void Continue()
         {
+            Log.Write("Continue button was clicked");
             int count = 0;
             var checklistModel = SetCheckList();
+            Log.Write("SetCheckList() was Done");
 
             if (checklistModel == null)
             {
@@ -218,6 +225,7 @@ new ObservableCollection<QuestionForExcel>();
 
         internal List<CheckModel> SetCheckList()
         {
+            Log.Write("SetCheckList() was Started");
             Dictionary<string, bool> dic = new Dictionary<string, bool>();
             foreach (QuestionModel quest in QuestionList)
             {
@@ -236,7 +244,8 @@ new ObservableCollection<QuestionForExcel>();
 
         internal void SeTImpactInExcel()
         {
-            if (!ExcelManagerController.IsFileLocked())
+            Log.Write("SeTImpactInExcel() was Started");
+            if (ExcelManagerController.FileIsReady())
             {
                 ExcelManagerController.OpenAndSet(1, DateTime.Now.ToShortDateString());
                 ExcelManagerController.OpenAndSet(2, XmlManagerController.GetDeveloperName());
@@ -252,6 +261,7 @@ new ObservableCollection<QuestionForExcel>();
                 CreateMailItem(WorkItem);
             }
             Finished = true;
+            Log.Write("SeTImpactInExcel() was Done");
         }
 
         private void CreateMailItem(string workItemNum)

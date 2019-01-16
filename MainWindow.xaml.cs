@@ -29,9 +29,14 @@ namespace CheckListToolWPF
         private const string Unique = "UniqueCheckListTool";
         public MainWindow()
         {
+
             if (Microsoft.Shell.SingleInstance<App>.InitializeAsFirstInstance(Unique))
             {
                 InitializeComponent();
+
+                Log.CreateLogIfNotExist();
+
+                Log.Write("Application was launched");
 
                 GetQuestionsFromXmls();
 
@@ -45,19 +50,29 @@ namespace CheckListToolWPF
 
         private void GetQuestionsFromXmls()
         {
-            questionModelList = new List<QuestionModel>();
-            var questList = new List<string>();
-            questList = XmlManagerController.GetQuestions();
-            questList.ForEach(e =>
+            try
             {
-                questionModelList.Add(new QuestionModel() { Question = e });
-            });
+                Log.Write("GetQuestionsFromXmls() was Started");
+                questionModelList = new List<QuestionModel>();
+                var questList = new List<string>();
+                questList = XmlManagerController.GetQuestions();
+                questList.ForEach(e =>
+                {
+                    questionModelList.Add(new QuestionModel() { Question = e });
+                });
 
-            impactModelList = new List<QuestionForExcel>();
-            var excelQuestList = XmlManagerController.GetExcelQuestions();
-            foreach (var excelQuest in excelQuestList)
+                impactModelList = new List<QuestionForExcel>();
+                var excelQuestList = XmlManagerController.GetExcelQuestions();
+                foreach (var excelQuest in excelQuestList)
+                {
+                    impactModelList.Add(new QuestionForExcel() { ExcelColumnNumber = excelQuest.Key, Question = excelQuest.Value });
+                }
+                Log.Write("GetQuestionsFromXmls() was Done");
+            }
+            catch (Exception e)
             {
-                impactModelList.Add(new QuestionForExcel() { ExcelColumnNumber = excelQuest.Key, Question = excelQuest.Value });
+                Log.Write("Error was catched in GetQuestionsFromXmls(): " + e);
+                Application.Current.Shutdown();
             }
         }
 

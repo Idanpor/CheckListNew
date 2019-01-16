@@ -16,34 +16,42 @@ namespace CheckListToolWPF
         static Excel.Workbook xlWorkBook;
         static Excel.Worksheet xlWorkSheet;
         private static long nextRow = 0;
-        private static string filePath = Settings.Default.ImpactAnalysisExcelPath;//Directory.GetCurrentDirectory() + "\\test2.xlsx";
+        private static string filePath = Settings.Default.ImpactAnalysisExcelPath;
         private static bool open = false;
         public static void OpenAndSet(int column, string value)
         {
-            object misValue = System.Reflection.Missing.Value;
-
-
-            if (!open)
+            try
             {
-                xlApp = new Excel.Application();
-                xlWorkBook = xlApp.Workbooks.Open(filePath);
-                open = true;
-                xlWorkSheet = (Excel.Worksheet)xlWorkBook.Sheets[1];
-            }
+                object misValue = System.Reflection.Missing.Value;
 
-
-            if (nextRow == 0)
-            {
-                double notEmpty = 1;
-                while (notEmpty > 0)
+                if (!open)
                 {
-                    string aCellAddress = "A" + (++nextRow).ToString();
-                    var row = xlApp.get_Range(aCellAddress, aCellAddress).EntireRow;
-                    notEmpty = xlApp.WorksheetFunction.CountA(row);
+                    xlApp = new Excel.Application();
+                    xlWorkBook = xlApp.Workbooks.Open(filePath);
+                    open = true;
+                    xlWorkSheet = (Excel.Worksheet)xlWorkBook.Sheets[1];
                 }
-            }
 
-            xlWorkSheet.Cells[nextRow, column] = value;
+                if (nextRow == 0)
+                {
+                    double notEmpty = 1;
+                    while (notEmpty > 0)
+                    {
+                        string aCellAddress = "A" + (++nextRow).ToString();
+                        var row = xlApp.get_Range(aCellAddress, aCellAddress).EntireRow;
+                        notEmpty = xlApp.WorksheetFunction.CountA(row);
+                    }
+                }
+
+                xlWorkSheet.Cells[nextRow, column] = value;
+            }
+            catch(Exception e)
+            {
+                Close();
+                Log.Write("Error was catched in OpenAndSet(): " + e);
+                MessageBox.Show("Something went wrong, take a look at the log!");
+                Application.Current.Shutdown();
+            }
         }
 
         static bool IsOpened(string wbook)
@@ -60,6 +68,30 @@ namespace CheckListToolWPF
                 isOpened = false;
             }
             return isOpened;
+        }
+
+        public static bool IsFileReady()
+        {
+            // If the file can be opened for exclusive access it means that the file
+            // is no longer locked by another process.
+            try
+            {
+                using (FileStream inputStream = File.Open(filePath, FileMode.Open, FileAccess.Read, FileShare.None))
+                    return inputStream.Length > 0;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public static bool FileIsReady()
+        {
+            //This will lock the execution until the file is ready
+            //TODO: Add some logic to make it async and cancelable
+            while (!IsFileReady()) { }
+
+            return true;
         }
 
         public static bool IsFileLocked()

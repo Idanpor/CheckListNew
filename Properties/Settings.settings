@@ -35,5 +35,8 @@
     <Setting Name="Version" Type="System.String" Scope="User">
       <Value Profile="(Default)">1.0.0</Value>
     </Setting>
+    <Setting Name="LogPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">R:\CT Apps\Tools\Commit_CheckList\Logs</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

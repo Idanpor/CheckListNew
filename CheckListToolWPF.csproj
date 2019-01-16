@@ -65,6 +65,7 @@
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="DelegateCommandBase.cs" />
     <Compile Include="ExcelManagerController.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Model\CheckModel.cs" />
     <Compile Include="Model\QuestionForExcel.cs" />
     <Compile Include="SingleInstance.cs" />
