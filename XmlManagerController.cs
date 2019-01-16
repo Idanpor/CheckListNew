@@ -73,8 +73,10 @@ namespace CheckListToolWPF
                     var columnNumber = (xmlExcelQueston as XmlNode)?.NextSibling;
                     if (columnNumber != null)
                     {
-
-                        questList.Add((columnNumber.InnerText != String.Empty) ? int.Parse(columnNumber.InnerText) : 0, (xmlExcelQueston as XmlNode)?.InnerText);
+                        if (!questList.ContainsKey(int.Parse(columnNumber.InnerText)))
+                        {
+                            questList.Add((columnNumber.InnerText != String.Empty) ? int.Parse(columnNumber.InnerText) : 0, (xmlExcelQueston as XmlNode)?.InnerText);
+                        }
                     }
                 }
 

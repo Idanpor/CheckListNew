@@ -34,16 +34,16 @@ namespace CheckListToolWPF
 
             if (nextRow == 0)
             {
-                var xlRange = (Excel.Range)xlWorkSheet.Cells[xlWorkSheet.Rows.Count, 1];
-                var lastRow = (long)xlRange.get_End(Excel.XlDirection.xlUp).Row;
-                nextRow = lastRow + 1;
-
+                double notEmpty = 1;
+                while (notEmpty > 0)
+                {
+                    string aCellAddress = "A" + (++nextRow).ToString();
+                    var row = xlApp.get_Range(aCellAddress, aCellAddress).EntireRow;
+                    notEmpty = xlApp.WorksheetFunction.CountA(row);
+                }
             }
 
             xlWorkSheet.Cells[nextRow, column] = value;
-            //xlWorkSheet.Cells[1, 1] = "333";
-            //MessageBox.Show(xlWorkSheet.Cells[1,1].Value2.ToString());
-            //Close();
         }
 
         static bool IsOpened(string wbook)

@@ -22,17 +22,25 @@ namespace CheckListToolWPF
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, Microsoft.Shell.ISingleInstanceApp
     {
          List<QuestionModel> questionModelList;
         List<QuestionForExcel> impactModelList;
+        private const string Unique = "UniqueCheckListTool";
         public MainWindow()
         {
-            InitializeComponent();
+            if (Microsoft.Shell.SingleInstance<App>.InitializeAsFirstInstance(Unique))
+            {
+                InitializeComponent();
 
-            GetQuestionsFromXmls();
+                GetQuestionsFromXmls();
 
-            DataContext = new FilterQuestionsViewNodel(questionModelList, impactModelList);
+                DataContext = new FilterQuestionsViewNodel(questionModelList, impactModelList);
+            }
+            else
+            {
+                System.Windows.Application.Current.Shutdown();
+            }
         }
 
         private void GetQuestionsFromXmls()
@@ -53,11 +61,11 @@ namespace CheckListToolWPF
             }
         }
 
-        private void Exit_Button_Click(object sender, RoutedEventArgs e)
+        public bool SignalExternalCommandLineArgs(IList<string> args)
         {
-            System.Windows.Application.Current.Shutdown();
+            return true;
         }
-        
+
 
     }
 }

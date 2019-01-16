@@ -6,8 +6,8 @@
         xmlns:conv ="clr-namespace:CheckListToolWPF.Converter"
         xmlns:local="clr-namespace:CheckListToolWPF"
         mc:Ignorable="d"    
-        Title="Checklist Tool" Height="{Binding FormHeight,Mode=TwoWay}" Grid.IsSharedSizeScope="True" Width="560" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"
-        Icon="{Binding IconPath}" ResizeMode="NoResize">
+        Title="{Binding Title}" Height="{Binding FormHeight,Mode=TwoWay}" Grid.IsSharedSizeScope="True" Width="560" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
+        Icon="{Binding IconPath}" ResizeMode="NoResize" Name ="root">
     <Window.Resources>
         <conv:BoolToVisibilityConverter x:Key="FirstStage"/>
         <conv:BoolToVisibilityConverter x:Key="SecondStage" Negate="True"/>
@@ -285,7 +285,7 @@
 
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="MyDataTemplate2"
+        <DataTemplate x:Key="MyDataTemplate2" x:Name="d"
                   DataType="local:CheckModel">
             <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" >
                 <Grid.RowDefinitions>
@@ -308,7 +308,8 @@
             </Grid>
         </DataTemplate>
     </Window.Resources>
-    <StackPanel>
+    <DockPanel>
+    <StackPanel DockPanel.Dock="Top">
         <StackPanel Orientation="Horizontal">
             <Button Command="{Binding BackCommand}" Name="BackButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Content="{StaticResource LeftArrowImage}" Width="24" Height="24" BorderThickness="0" HorizontalAlignment="Left" Visibility="{Binding CanContinue, Converter={StaticResource SecondStage}}"/>
             <Button Command="{Binding ContinueCommand}" Name="ContinueButton" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Content="{StaticResource RightArrowImage}" Width="24" Height="24" BorderThickness="0" HorizontalAlignment="Left" Visibility="{Binding CanContinue, Converter={StaticResource FirstStage}}"/>
@@ -323,10 +324,10 @@
                         <TextBox Text="{Binding WorkItem, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Width="100" BorderBrush="Black"/>
                     </StackPanel>
 
-                    <ListBox ItemsSource="{Binding ImpactList}"
+                    <ListBox ItemsSource="{Binding ImpactList}" Name="impactList"
              ItemTemplate="{StaticResource MyDataTemplate}"
              HorizontalContentAlignment="Stretch"
-                 Margin="0,7,0,7" Grid.IsSharedSizeScope="True"/>
+                 Margin="0,7,0,7" Grid.IsSharedSizeScope="True" MaxHeight="230"/>
 
                 </StackPanel>
 
@@ -336,38 +337,34 @@
         <Label Name="Title1"  Height="40" Width="250" Content="Checklist-Filter Questions: " FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" Visibility="{Binding CanContinue, Converter={StaticResource FirstStage}}"/>
         <Label Name="Title2"  Height="40" Width="250" Content="Checklist-Final: " FontSize="16" FontWeight="Bold" HorizontalAlignment="Left" Visibility="{Binding CanContinue, Converter={StaticResource SecondStage}}"/>
 
-        <Border BorderThickness="2">
-            <StackPanel>
+            <Border BorderThickness="2">
+                <StackPanel>
 
-                <ListBox ItemsSource="{Binding QuestionList}"
+                    <ListBox ItemsSource="{Binding QuestionList}"
              ItemTemplate="{StaticResource MyDataTemplate}"
-             HorizontalContentAlignment="Stretch" Name ="questlist" Grid.IsSharedSizeScope="True"  Visibility="{Binding CanContinue, Converter={StaticResource FirstStage}}">
-                </ListBox>
+             HorizontalContentAlignment="Stretch" Name ="questlist" Grid.IsSharedSizeScope="True"  Visibility="{Binding CanContinue, Converter={StaticResource FirstStage}}" MaxHeight="230">
+                    </ListBox>
 
-                <ListBox ItemsSource="{Binding CheckList}"
+                    <ListBox ItemsSource="{Binding CheckList}"
              ItemTemplate="{StaticResource MyDataTemplate2}"
              HorizontalContentAlignment="Stretch"
-                 Visibility="{Binding CanContinue, Converter={StaticResource SecondStage}}" Name ="checklist" Grid.IsSharedSizeScope="True" Height="250">
+                 Visibility="{Binding CanContinue, Converter={StaticResource SecondStage}}" Name ="checklist" Grid.IsSharedSizeScope="True" MaxHeight="250">
 
-                </ListBox>
-            </StackPanel>
-        </Border>
+                    </ListBox>
+                </StackPanel>
+            </Border>
 
-
-
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Bottom"  Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Name="buttons" Margin="5,1,1,5">
             <!--<Button Command="{Binding SubmitCommand}"></Button>-->
 
             <!--<Button Command="{Binding SubmitCommand}"></Button>-->
             <Button Style="{DynamicResource ButtonStyle}" Command="{Binding ContinueCommand}" Width="100" Height="30" Content="Continue" Visibility="{Binding CanContinue, Converter={StaticResource FirstStage}}" x:Name="submit_button" Margin="10,15,0,0" Background="#0085CA" HorizontalAlignment="Right" FontWeight="Bold"/>
             <Button Style="{DynamicResource ButtonStyle}" Command="{Binding FinishCommand}" Width="100" Height="30" Content="Finish" Visibility="{Binding CanContinue, Converter={StaticResource SecondStage}}" x:Name="finish_button" Margin="10,15,0,0" Background="#0085CA" HorizontalAlignment="Right" FontWeight="Bold"/>
 
-            <Button Style="{DynamicResource ButtonStyle}" Click="Exit_Button_Click" Width="100" Height="30" Content="Cancel" x:Name="exit_button" Margin="10,15,10,0" Background="#004B87" HorizontalAlignment="Right" FontWeight="Bold"/>
+            <Button Style="{DynamicResource ButtonStyle}" Command="{Binding CancelCommand}" Width="100" Height="30" Content="Cancel" x:Name="exit_button" Margin="10,15,10,0" Background="#004B87" HorizontalAlignment="Right" FontWeight="Bold"/>
             <!--<Button Click="Back_Button_Click" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" BorderThickness="0" FontFamily="Marlett" FontSize="20" Content="3" Width="50" HorizontalAlignment="Left"/>-->
-           
+
         </StackPanel>
-
-    </StackPanel>
-
-
+    </DockPanel>
 </Window>

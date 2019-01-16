@@ -29,6 +29,7 @@ namespace CheckListToolWPF.ViewModel
 
         public DelegateCommand FinishCommand { get; private set; }
 
+        public DelegateCommand CancelCommand { get; private set; }
 
         private int formHeight;
         public int FormHeight
@@ -76,6 +77,15 @@ namespace CheckListToolWPF.ViewModel
             {
                 workItem = value;
                 OnPropertyChanged();
+            }
+        }
+
+        private string title;
+        public string Title
+        {
+            get
+            {
+                return "Checklist & Impact Analysis Tool - " + "Version "  + Settings.Default.Version;
             }
         }
 
@@ -142,6 +152,13 @@ new ObservableCollection<QuestionForExcel>();
             ContinueCommand = new DelegateCommand(Continue, CanContinue);
             BackCommand = new DelegateCommand(Back, CanBack);
             FinishCommand = new DelegateCommand(Finish);
+            CancelCommand = new DelegateCommand(Cancel);
+        }
+
+        private void Cancel()
+        {
+            Microsoft.Shell.SingleInstance<App>.Cleanup();
+            System.Windows.Application.Current.Shutdown();
         }
 
         public delegate void ImpactInExcel();
@@ -175,19 +192,23 @@ new ObservableCollection<QuestionForExcel>();
                 return;
             }
 
-            if (WorkItem == null || WorkItem == String.Empty)
+            if (WorkItem == null || WorkItem == String.Empty || WorkItem.Length != 6)
             {
-                MessageBox.Show("Please enter workItem Id");
+                MessageBox.Show("Please enter correct (6 digits) workItem Id!");
                 return;
             }
 
+            var checklistCopy = new List<CheckModel>(CheckList);
             CheckList.Clear();
+
             checklistModel.ForEach(check =>
             {
-                check.GroupNameDone = "GroupNameDone" + count;
-                check.GroupNameNoRelevant = "GroupNameNoRelevant" + count;
-                count++;
-                CheckList.Add(check);
+                    check.GroupNameDone = "GroupNameDone" + count;
+                    check.GroupNameNoRelevant = "GroupNameNoRelevant" + count;
+                    var existCheck = checklistCopy.FirstOrDefault(c => c.CheckDescription.Equals(check.CheckDescription));
+                    check.IsDoneCheckBox = (existCheck != null) ? existCheck.IsDoneCheckBox : false;
+                    count++;
+                    CheckList.Add(check);
             });
 
             FormHeight = 460;
@@ -200,7 +221,11 @@ new ObservableCollection<QuestionForExcel>();
             Dictionary<string, bool> dic = new Dictionary<string, bool>();
             foreach (QuestionModel quest in QuestionList)
             {
-                dic.Add((quest as QuestionModel)?.Question ?? throw new InvalidOperationException(), (quest as QuestionModel).IsRelevantQuestion);
+                string currentQuest = (quest as QuestionModel).Question;
+                if (!dic.ContainsKey(currentQuest))
+                {
+                    dic.Add(currentQuest ?? throw new InvalidOperationException(), (quest as QuestionModel).IsRelevantQuestion);
+                }
             }
             XmlManagerController.dictionaryChecks = dic;
 
