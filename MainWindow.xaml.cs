@@ -71,7 +71,7 @@ namespace CheckListToolWPF
             }
             catch (Exception e)
             {
-                Log.Write("Error was catched in GetQuestionsFromXmls(): " + e);
+                Log.Write("Error was catched in MainWindow.GetQuestionsFromXmls(): " + e);
                 Application.Current.Shutdown();
             }
         }

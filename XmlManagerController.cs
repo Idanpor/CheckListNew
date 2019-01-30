@@ -51,7 +51,7 @@ namespace CheckListToolWPF
                 }
                 catch(Exception e)
                 {
-                    Log.Write("Error was catched in GetDeveloperName(): " + e);
+                    Log.Write("Error was catched in XmlManagerController.GetDeveloperName(): " + e);
                     MessageBox.Show("Something went wrong, take a look at the log!");
                     Application.Current.Shutdown();
                 }
@@ -82,7 +82,7 @@ namespace CheckListToolWPF
                 }
                 catch(Exception e)
                 {
-                    Log.Write("Error was catched in GetExcelQuestions(): " + e);
+                    Log.Write("Error was catched in XmlManagerController.GetExcelQuestions(): " + e);
                     MessageBox.Show("Something went wrong, take a look at the log!");
                     Application.Current.Shutdown();
                 }
@@ -111,7 +111,7 @@ namespace CheckListToolWPF
                 }
                 catch (Exception e)
                 {
-                    Log.Write("Error was catched in GetQuestions(): " + e);
+                    Log.Write("Error was catched in XmlManagerController.GetQuestions(): " + e);
                     MessageBox.Show("Something went wrong, take a look at the log!");
                     Application.Current.Shutdown();
                 }
@@ -168,7 +168,7 @@ namespace CheckListToolWPF
                 }
                 catch (Exception e)
                 {
-                    Log.Write("Error was catched in GetChecks(): " + e);
+                    Log.Write("Error was catched in XmlManagerController.GetChecks(): " + e);
                     MessageBox.Show("Something went wrong, take a look at the log!");
                     Application.Current.Shutdown();
                 }
@@ -203,7 +203,7 @@ namespace CheckListToolWPF
                 }
                 catch(Exception e)
                 {
-                    Log.Write("Error was catched in SetCheckResult(): " + e);
+                    Log.Write("Error was catched in XmlManagerController.SetCheckResult(): " + e);
                     MessageBox.Show("Something went wrong, take a look at the log!");
                     Application.Current.Shutdown();
                 }

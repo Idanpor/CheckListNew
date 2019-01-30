@@ -48,7 +48,7 @@ namespace CheckListToolWPF
             catch(Exception e)
             {
                 Close();
-                Log.Write("Error was catched in OpenAndSet(): " + e);
+                Log.Write("Error was catched in ExcelManagerController.OpenAndSet(): " + e);
                 MessageBox.Show("Something went wrong, take a look at the log!");
                 Application.Current.Shutdown();
             }
